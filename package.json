@@ -8,8 +8,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "cypress": "^13.6.4"
-  }
+  "license": "ISC"
 }
