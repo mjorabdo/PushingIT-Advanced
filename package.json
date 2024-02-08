@@ -6,7 +6,18 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FabrizioOtranto/avanzado-1.git"
+  },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FabrizioOtranto/avanzado-1/issues"
+  },
+  "homepage": "https://github.com/FabrizioOtranto/avanzado-1#readme",
+  "devDependencies": {
+    "cypress": "^13.6.4"
+  }
 }
