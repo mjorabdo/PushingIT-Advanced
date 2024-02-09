@@ -11,7 +11,7 @@ on:
         default: "**"
         required: true
 jobs:
-  record-run-specs-for-account-manually:
+  run-cypress:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
