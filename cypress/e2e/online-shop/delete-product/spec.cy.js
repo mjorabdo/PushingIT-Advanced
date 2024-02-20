@@ -1,4 +1,4 @@
-import data from '../../../fixtures/deleteProduct-15.json'
+import data from '../../../fixtures/deleteProduct.json'
 import { login } from '../../../support/loginPage';
 import { mainPage } from '../../../support/homePage';
 import { product } from '../../../support/productPage';

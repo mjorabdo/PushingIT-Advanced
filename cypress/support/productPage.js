@@ -1,4 +1,4 @@
-import data from '../fixtures/deleteProduct-15.json'
+import data from '../fixtures/deleteProduct.json'
 export class ProductPage{
 
 
