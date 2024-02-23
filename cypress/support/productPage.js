@@ -1,81 +1,86 @@
-import data from '../fixtures/deleteProduct.json'
-export class ProductPage{
+import data from '../fixtures/deleteProduct.json';
 
-
-    constructor() {
-        this.onlineShopTitle ='.css-1vqu2wk'   
-        this.addProductBtn = '[data-cy="add-product"]'    
-        this.productNameInput = '[data-cy="productName"]'  
-        this.productPriceInput = '[data-cy="productPrice"]'  
-        this.productImageURLInput = '[data-cy="productCard"]'   
-        this.productIDInput = '[data-cy="productID"]'   
-        this.createProductBtn = '[data-cy="createProduct"]' 
-        this.searchProduct = '[data-cy="search-bar"]' 
-        this.closeModal = '#closeModal'
-        this.searchType = '#search-type'
-        this.searchBar = '[data-cy="search-bar"]' 
-        this.deleteBtn = '#saveEdit'   
-        this.msgAlert = '[role="dialog"] div p'   
-    }
-
-    generateRandomID() {
-      this.randomID = Math.floor(Math.random() * 100) + 1;
-      return this.randomID;
-    }
-
-   clickAddProductBtn(){
-    cy.get(this.addProductBtn).click()
-   }
-
-   fillProductName(string){
-     cy.get(this.productNameInput).type(string)
-   }
-
-   fillProductPrice(number){
-    cy.get(this.productPriceInput).type(number)
+export class ProductPage {
+  constructor() {
+    this.onlineShopTitle = '.css-1vqu2wk';
+    this.addProductBtn = '[data-cy="add-product"]';
+    this.productNameInput = '[data-cy="productName"]';
+    this.productPriceInput = '[data-cy="productPrice"]';
+    this.productImageURLInput = '[data-cy="productCard"]';
+    this.productIDInput = '[data-cy="productID"]';
+    this.createProductBtn = '[data-cy="createProduct"]';
+    this.searchProduct = '[data-cy="search-bar"]';
+    this.closeModal = '#closeModal';
+    this.searchType = '#search-type';
+    this.searchBar = '[data-cy="search-bar"]';
+    this.deleteBtn = '#saveEdit';
+    this.msgAlert = '[role="dialog"] div p';
+    this.randomID = ''; // Inicializa randomID
   }
 
-  fillProductImageURL(string){
-    cy.get(this.productImageURLInput).type(string)
+  generateRandomID() {
+    this.randomID = Math.floor(Math.random() * 100) + 1;
+    return this.randomID.toString();
   }
 
-  fillProductID(number){
-    cy.get(this.productIDInput).type(number)
+  clickAddProductBtn() {
+    cy.get(this.addProductBtn).click();
   }
 
-  fillForm(){
-    this.fillProductName(data.createProduct.productName)
-    this.fillProductPrice(data.createProduct.productPrice)
-    this.fillProductImageURL(data.createProduct.productImageUrl)
-    this.fillProductID(data.createProduct.productID)
+  fillProductName(string) {
+    cy.get(this.productNameInput).type(string);
   }
 
-  clickCreateProdBtn(){
-    cy.get(this.createProductBtn).click({force:true})
+  fillProductPrice(number) {
+    cy.get(this.productPriceInput).type(number);
   }
 
-  clickCloseModal(){
-    cy.get(this.closeModal).click()
+  fillProductImageURL(string) {
+    cy.get(this.productImageURLInput).type(string);
   }
 
-  selectSearchByID(){
-    cy.get(this.searchType).select('id')
+  fillProductID(number) {
+    cy.get(this.productIDInput).type(number);
   }
 
-  clickDeleteIcon(){
+  fillForm() {
+    this.generateRandomID(); // Llama a generateRandomID para generar el ID
+    data.createProduct.productID = this.randomID;
+    this.fillProductName(data.createProduct.productName);
+    this.fillProductPrice(data.createProduct.productPrice);
+    this.fillProductImageURL(data.createProduct.productImageUrl);
+    this.fillProductID(data.createProduct.productID);
+  }
+
+  clickCreateProdBtn() {
+    cy.get(this.createProductBtn).click({ force: true });
+  }
+
+  clickCloseModal() {
+    cy.get(this.closeModal).click();
+  }
+
+  selectSearchByID() {
+    cy.get(this.searchType).select('id');
+  }
+
+  clickDeleteIcon() {
     this.getDeleteIcon().click();
   }
-  clickDeleteBtn(){
-    cy.get(this.deleteBtn).click()
+
+  clickDeleteBtn() {
+    cy.get(this.deleteBtn).click();
   }
-  getDeleteIcon(){
-    return cy.get(`[data-cy="delete-${this.randomID}"]`)
+
+  getDeleteIcon() {
+    const deleteIconSelector = `[data-cy="delete-${this.randomID}"]`;
+    return cy.get(deleteIconSelector);
   }
-  searchProductByID(){
-    this.selectSearchByID()
+
+  searchProductByID() {
+    this.selectSearchByID();
     cy.get(this.searchBar).should('be.visible').type(`${data.createProduct.productID}{enter}`);
   }
-
 }
-export const product = new ProductPage()
 
+export const product = new ProductPage();

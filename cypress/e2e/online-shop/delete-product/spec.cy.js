@@ -1,10 +1,18 @@
-import data from '../../../fixtures/deleteProduct.json'
+// import data from '../../../fixtures/deleteProduct.json'
 import { login } from '../../../support/loginPage';
 import { mainPage } from '../../../support/homePage';
 import { product } from '../../../support/productPage';
 const base = Cypress.env("baseUrl");
 
 describe('Delete Product - Online shop',()=>{
+
+  let data
+  before('before', ()=>{    
+    
+    cy.fixture('deleteProduct').then(fixtureData => {
+        data = fixtureData;  
+      });
+  })
 
     beforeEach('User should LogIn', ()=>{
         cy.visit(base)
