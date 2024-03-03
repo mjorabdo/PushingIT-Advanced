@@ -7,7 +7,7 @@
         "productName" : "Blue Jacket",
         "productPrice": "30.25",
         "productImageUrl" : "30.https://webcdn.protest.eu/resize?type=auto&stripmeta=true&url=https%3A%2F%2Fpim.protest.eu%2FProductMedia%2F2023-02%2FLADIES%2FJACKETS%2F6611832%2F6611832_512_model_back-half_01.jpeg&quality=90&width=2500",
-        "productID" : "{{randomID}}"
+        "productID" : " "
 
     },
     "msgAlert": "has been added"

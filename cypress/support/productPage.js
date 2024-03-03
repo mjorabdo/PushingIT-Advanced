@@ -76,11 +76,22 @@ export class ProductPage {
     const deleteIconSelector = `[data-cy="delete-${this.randomID}"]`;
     return cy.get(deleteIconSelector);
   }
-
   searchProductByID() {
     this.selectSearchByID();
-    cy.get(this.searchBar).should('be.visible').type(`${data.createProduct.productID}{enter}`);
+  
+    // Wait for the product ID to be set
+    return cy.wrap(Cypress.env()).should('have.property', 'productId').then(() => {
+      // Use the stored product ID directly
+      cy.get(this.searchBar).should('be.visible').type(`${Cypress.env().productId}{enter}`).then(() => {
+        cy.log(`Searching for product with ID: ${Cypress.env().productId}`);
+      });
+    });
   }
+  
+  
+  
+  
+  
 }
 
 export const product = new ProductPage();
