@@ -1,5 +1,3 @@
-
-import { login } from '../../../support/loginPage';
 import { mainPage } from '../../../support/homePage';
 import { product } from '../../../support/productPage';
 
@@ -31,11 +29,10 @@ it('Validate edit a product', ()=>{
   
   cy.productPage()  
 
-  // Search the product
-  cy.getProduct('24')
-
-  // Delete the product if exist
-  cy.deleteProduct('24')
+  // Search the product and Delete if the product exist
+  cy.getProduct(randomID).then(()=>{  
+    cy.deleteProduct(Cypress.env('currentProductId'))
+  })
 
   // Add a product
   cy.addProduct(
@@ -45,27 +42,16 @@ it('Validate edit a product', ()=>{
     data.createProduct.productPrice
   )  
 
-  //Edit Product
-  cy.editProduct('White Jacket', 'imgURl', '20.50').then(()=>{
-
- // Visitar el sitio web
+  //Edit Product and validate it.
+  cy.editProduct('White Jacket', ' ', '20.50').then(()=>{
   cy.visit(base);
   mainPage.clickOnlineShopLink();
   cy.url().should('contain', 'onlineshop');
-
- // Search by ID the edited product
-  cy.get('#search-type').select('id').then(()=>{
-  cy.get('[data-cy="search-bar"]').should('be.visible').type(`${Cypress.env().productID}{enter}`);
-  cy.log(`Searching for product with ID: ${Cypress.env().productID}`);
-
-  // apartir de aca es cuando quiero seleccionar el boton del producto seleccionado por ID, para luego validar los datos, pero no me encuentra el btn de ese producto
-  cy.get(`button[id="edit-${Cypress.env().productID}"]`).click()
-  
- })
-
- 
- 
- 
+  cy.getProductById(`${Cypress.env().productID}`).then(()=>{  
+   expect( Cypress.env('productName')).to.eq(Cypress.env('editedProductName') )
+   expect( Cypress.env('productPrice')).to.eq(Cypress.env('editedProductPrice') )
+  })
+ }) 
   })
 
    
@@ -93,4 +79,4 @@ it('Validate edit a product', ()=>{
   
 
 })
-})
+
