@@ -12,7 +12,7 @@ module.exports = defineConfig({
   },
   env:{
 		baseUrl: 'https://pushing-it.vercel.app/',
-    baseUrlApi: 'https://pushing-it.onrender.com/api/',
+    baseUrlApi: 'https://pushing-it.onrender.com/api',
     token: '',
     username:'pushingit',
     password:'123456!',

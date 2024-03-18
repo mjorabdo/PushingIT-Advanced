@@ -16,6 +16,7 @@ export class ProductPage {
     this.deleteBtn = '#saveEdit';
     this.msgAlert = '[role="dialog"] div p';
     this.randomID = ''; // Inicializa randomID
+    this.goShoppingCartBtn = '#goShoppingCart'
   }
 
   generateRandomID() {
@@ -87,7 +88,17 @@ export class ProductPage {
       });
     });
   }
-  
+
+  getProductByName(productName){
+    return cy.get(this.searchType).select('name').then(()=>{
+       cy.get(this.searchBar).should('be.visible').type(`${productName} {enter}`)
+       cy.wait(2000)
+    })
+    
+  }
+  clickShoppCartBtn(){
+    cy.get(this.goShoppingCartBtn).click()
+  }
   
   
   

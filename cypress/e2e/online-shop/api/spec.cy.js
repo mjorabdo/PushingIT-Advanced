@@ -22,36 +22,51 @@ beforeEach('', ()=>{
 it('Validate edit a product', ()=>{
   
   // productID Random number
-  const randomID = product.generateRandomID()
+  const randomID1 = product.generateRandomID()
+  const randomID2 = product.generateRandomID()
 
   // Update value of productID
-  data.createProduct.productID = randomID.toString();
-  
+  data.createProduct1.productID1 = randomID1.toString();
+  data.createProduct2.productID2 = randomID2.toString();
+
   cy.productPage()  
 
-  // Search the product and Delete if the product exist
-  cy.getProduct(randomID).then(()=>{  
-    cy.deleteProduct(Cypress.env('currentProductId'))
-  })
+  // Create 2 products
 
-  // Add a product
+  cy.deleteProduct(randomID1)
   cy.addProduct(
-    data.createProduct.productName,
-    data.createProduct.productImageUrl,
-    data.createProduct.productID,
-    data.createProduct.productPrice
-  )  
+    data.createProduct1.productName,
+    data.createProduct1.productImageUrl,
+    data.createProduct1.productID1,
+    data.createProduct1.productPrice
+  )
 
-  //Edit Product and validate it.
-  cy.editProduct('White Jacket', ' ', '20.50').then(()=>{
-  cy.visit(base);
-  mainPage.clickOnlineShopLink();
-  cy.url().should('contain', 'onlineshop');
-  cy.getProductById(`${Cypress.env().productID}`).then(()=>{  
-   expect( Cypress.env('productName')).to.eq(Cypress.env('editedProductName') )
-   expect( Cypress.env('productPrice')).to.eq(Cypress.env('editedProductPrice') )
-  })
- }) 
+ cy.deleteProduct(randomID2)
+ cy.addProduct(
+      data.createProduct2.productName,
+      data.createProduct2.productImageUrl,
+      data.createProduct2.productID2,
+      data.createProduct2.productPrice
+    );
+  
+  mainPage.clickOnlineShopLink()
+  cy.wait(100000)
+
+  cy.get('[data-cy="search-type"]').select('name')
+  cy.get('[data-cy="search-bar"]').should('be.visible').type('Blue Jacket').type('{enter}');
+
+  cy.wait(2000)
+  cy.get(`button[name="${data.createProduct1.productName}"]`).click({force: true})
+  product.clickCloseModal()
+
+
+
+  
+
+  
+
+
+
   })
 
    

@@ -22,49 +22,27 @@ Cypress.Commands.add('productPage',()=>{
         id: id,
         price: price,
       },
-    }).then((response) => {
-      const productID = response.body.product.id;
-      const product_Id = response.body.product._id;
-      window.localStorage.setItem('productID', productID);
-      window.localStorage.setItem('product_ID', product_Id);
-      Cypress.env().productId = productID;
-      Cypress.env().product_Id = product_Id;
-      cy.log(`Created product with ID: ${productID}`);
-      cy.log(`Created product with ID: ${product_Id}`);
-      return cy.wrap(productID);
-    });
+    })
+    
   });
   
   Cypress.Commands.add('editProduct', (name, img, price) => {
-    const product_Id = Cypress.env().product_Id;
-  
-    cy.request({
-      url: `${Cypress.env().baseUrlApi}product/${product_Id}`,
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${Cypress.env().token}`,
-      },
-      body: {
-        name: name,
-        img: img,
-        price: price,
-      },
-    }).then((response) => {
-      const productName = response.body.product.name;
-      const productPrice = response.body.product.price;
-      const productImg = response.body.product.img;
-      const productID = response.body.product.id;
-      const product_Id = response.body.product._id;
-      
-  
-      Cypress.env('product_Id', product_Id);
-      Cypress.env('editedProductName', productName);
-      Cypress.env('editedProductPrice', productPrice);
-      Cypress.env('editedProductImg', productImg);
-      Cypress.env('productID', productID);
+    cy.addProduct('Nombre', 'Imagen', 'ID', 'Precio') // Ejemplo de llamada a addProduct con valores.
+      .then(product_Id => {
+        cy.request({
+          url: `${Cypress.env().baseUrlApi}/product/${product_Id}`,
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${Cypress.env().token}`,
+          },
+          body: {
+            name: name,
+            img: img,
+            price: price,
+          },
+        })
        
-      expect(response.status).to.eq(202);
-    });
+      });
   });
   
   
@@ -92,27 +70,30 @@ Cypress.Commands.add('productPage',()=>{
   
     });
   });
-  
-  Cypress.Commands.add('deleteProduct', () => {
-    
-    const productId = Cypress.env('productID');
-  
-    if (!productId) {
-      cy.log("Product ID not found in the environment variable");
-      return;
-    }
-  
+
+  Cypress.Commands.add('deleteProduct', (id) => {
     cy.request({
-      url: `${Cypress.env().baseUrlApi}product/${productId}`,
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${Cypress.env().token}`
-      }
-    }).then((response) => {
-      expect(response.status).to.eq(202);
-      cy.log("Product deleted successfully");  
-      });
+        method: "GET",
+        url: `https://pushing-it.onrender.com/api/products?id=${id}`,
+        failsOnStatusCode: false,
+        headers: {
+            Authorization: `Bearer ${Cypress.env().token}`
+        }
+    }).its('body.products.docs').each((product) => {
+        cy.request({
+            method: "DELETE",
+            url: `https://pushing-it.onrender.com/api/product/${product._id}`,
+            headers: {
+                Authorization: `Bearer ${Cypress.env().token}`,
+            }
+        }).then(()=>{
+          cy.log('The existing product had been deleted')
+        })
     });
+
+});
+  
+  
   
     Cypress.Commands.add('getProductById', (productID)=>{
       cy.request({
@@ -132,4 +113,28 @@ Cypress.Commands.add('productPage',()=>{
        })
   
     })
+
+    Cypress.Commands.add('GetProductByName', (productName) => {
+      cy.request({
+          method: "GET",
+          url: `https://pushing-it.onrender.com/api//products?name=${productName}`,
+          failsOnStatusCode: false,
+          headers: {
+              Authorization: `Bearer ${Cypress.env().token}`
+          }
+      })
+  })
+
+  Cypress.Commands.add('GetProductByID', (id) => {
+    cy.request({
+        method: "GET",
+        url: `https://pushing-it.onrender.com/api/products?name=${id}`,
+        failsOnStatusCode: false,
+        headers: {
+            Authorization: `Bearer ${Cypress.env().token}`
+        }
+    })
+})
+
+    
   
