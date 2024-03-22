@@ -26,6 +26,7 @@ Cypress.Commands.add('productPage',()=>{
     
   });
   
+  
   Cypress.Commands.add('editProduct', (name, img, price) => {
     cy.addProduct('Nombre', 'Imagen', 'ID', 'Precio') // Ejemplo de llamada a addProduct con valores.
       .then(product_Id => {

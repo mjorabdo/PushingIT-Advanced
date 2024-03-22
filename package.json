@@ -20,5 +20,8 @@
   "homepage": "https://github.com/FabrizioOtranto/avanzado-1#readme",
   "devDependencies": {
     "cypress": "^13.6.4"
+  },
+  "dependencies": {
+    "pg": "^8.11.3"
   }
 }

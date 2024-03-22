@@ -19,13 +19,20 @@ Cypress.Commands.add('login', (username, password) => {
             password: password
         }
     }).then((response)=>{
+
         window.localStorage.setItem('token', response.body.token);
-        window.localStorage.setItem('token', response.body.user.username);
-        window.localStorage.setItem('token', response.body.user._id);
+        window.localStorage.setItem('user', response.body.user.username);
+        window.localStorage.setItem('userId', response.body.user._id);
         Cypress.env().token = response.body.token
+
+
         
     })
  })
+
+ Cypress.Commands.add('getByDataCy', (selector) => {
+    return cy.get(`[data-cy=${selector}]`)
+});
 
   
 

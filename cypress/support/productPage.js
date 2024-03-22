@@ -15,8 +15,12 @@ export class ProductPage {
     this.searchBar = '[data-cy="search-bar"]';
     this.deleteBtn = '#saveEdit';
     this.msgAlert = '[role="dialog"] div p';
-    this.randomID = ''; // Inicializa randomID
-    this.goShoppingCartBtn = '#goShoppingCart'
+    this.randomID = ''; 
+    this.goShoppingCartBtn = '#goShoppingCart';
+    this.checkoutBtn = '#goCheckout';
+    this.firstName= '[data-cy="firstName"]';
+    this.lastName= '[data-cy="lastName"]';
+    this.cardNumber= '[data-cy="cardNumber"]'
   }
 
   generateRandomID() {
@@ -77,29 +81,33 @@ export class ProductPage {
     const deleteIconSelector = `[data-cy="delete-${this.randomID}"]`;
     return cy.get(deleteIconSelector);
   }
-  searchProductByID() {
-    this.selectSearchByID();
   
-    // Wait for the product ID to be set
-    return cy.wrap(Cypress.env()).should('have.property', 'productId').then(() => {
-      // Use the stored product ID directly
-      cy.get(this.searchBar).should('be.visible').type(`${Cypress.env().productId}{enter}`).then(() => {
-        cy.log(`Searching for product with ID: ${Cypress.env().productId}`);
-      });
-    });
-  }
 
-  getProductByName(productName){
-    return cy.get(this.searchType).select('name').then(()=>{
-       cy.get(this.searchBar).should('be.visible').type(`${productName} {enter}`)
-       cy.wait(2000)
-    })
+  getProductByID(productID){
+    cy.get(this.searchType).select('id')
+    cy.get(this.searchBar).should('be.visible').clear().type(`${productID} {enter}`)     
     
   }
-  clickShoppCartBtn(){
+  getProductByName(productName){
+    cy.get(this.searchType).select('name')
+    cy.get(this.searchBar).should('be.visible').type(`${productName} {enter}`)     
+    
+  }
+  clickShopCartBtn(){
     cy.get(this.goShoppingCartBtn).click()
   }
-  
+  clickAddToCartBtn(prodName){
+    cy.get(`#add-to-cart-${prodName}`).click({force: true})
+  }
+
+  clickCheckoutBtn(){
+    cy.get(this.checkoutBtn).click()
+  }
+  fillBillingInfo(firstName, lastName, cardNumber){
+    cy.get(this.firstName).type(firstName)
+    cy.get(this.lastName).type(lastName)
+    cy.get(this.cardNumber).type(cardNumber)
+  }
   
   
   
