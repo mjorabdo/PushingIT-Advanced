@@ -1,4 +1,4 @@
-import data from '../fixtures/deleteProduct.json';
+import data from '../fixtures/dataProduct.json';
 
 export class ProductPage {
   constructor() {
@@ -107,6 +107,14 @@ export class ProductPage {
     cy.get(this.firstName).type(firstName)
     cy.get(this.lastName).type(lastName)
     cy.get(this.cardNumber).type(cardNumber)
+  }
+  add2Products(product){
+    this.getProductByID(`${product}`)
+    cy.wait(2000)
+    this.clickAddToCartBtn(`${product}`)   
+    this.clickCloseModal()
+    this.clickAddToCartBtn(`${product}`) 
+    this.clickCloseModal()
   }
   
   

@@ -1,56 +1,38 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
+
+import './assertions/productModel'
+import './assertions/shoppingCartModel'
+
 Cypress.Commands.add('login', (username, password) => { 
-    cy.request({
-        url:`${Cypress.env().baseUrlApi }/login`,
-        method:'POST',
-        body:{
-            username: username,
-            password: password
-        }
-    }).then((response)=>{
-
-        window.localStorage.setItem('token', response.body.token);
-        window.localStorage.setItem('user', response.body.user.username);
-        window.localStorage.setItem('userId', response.body.user._id);
-        Cypress.env().token = response.body.token
-
-
-        
+    cy.session('loginWithSession', ()=>{
+        cy.request({
+            url:`${Cypress.env().baseUrlApi }/login`,
+            method:'POST',
+            body:{
+                username: username,
+                password: password
+            }
+        }).then((response)=>{
+    
+            window.localStorage.setItem('token', response.body.token);
+            window.localStorage.setItem('user', response.body.user.username);
+            window.localStorage.setItem('userId', response.body.user._id);
+            Cypress.env().token = response.body.token        
+        })
     })
+  
  })
 
  Cypress.Commands.add('getByDataCy', (selector) => {
     return cy.get(`[data-cy=${selector}]`)
-});
+})
+
+
+
+Cypress.Commands.add('formatNumberToUSCurrency', (number) => {
+    return number.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    });
+})
 
   
-
-
-
-  
-
-
-
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })

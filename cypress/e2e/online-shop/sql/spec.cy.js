@@ -11,7 +11,7 @@ describe('', ()=>{
 let data 
 
 before('Fixture',()=>{
-    cy.fixture('deleteProduct').then(fixtureData => {
+    cy.fixture('dataProduct').then(fixtureData => {
         data = fixtureData;  
       });
 })
@@ -21,7 +21,7 @@ beforeEach('', ()=>{
 })
 it('Validate the added products in the database', ()=>{
 
-  data.createProduct1.totalPrice = data.createProduct1.quantity * data.createProduct1.productPrice
+  data.product1.totalPrice = data.product1.quantity * data.product1.productPrice
   
   // productID Random number
   const randomID1 = product.generateRandomID()
@@ -29,8 +29,8 @@ it('Validate the added products in the database', ()=>{
   
 
   // Update value of productID
-  data.createProduct1.productID1 = randomID1.toString();
-  data.createProduct2.productID2 = randomID2.toString();
+  data.product1.productID1 = randomID1.toString();
+  data.product2.productID2 = randomID2.toString();
 
   cy.productPage()  
 
@@ -38,19 +38,19 @@ it('Validate the added products in the database', ()=>{
 
   cy.deleteProduct(randomID1)
   cy.addProduct(
-    data.createProduct1.productName,
-    data.createProduct1.productImageUrl,
-    data.createProduct1.productID1,
-    data.createProduct1.productPrice,
+    data.product1.productName,
+    data.product1.productImageUrl,
+    data.product1.productID1,
+    data.product1.productPrice,
     
   )
 
  cy.deleteProduct(randomID2)
  cy.addProduct(
-      data.createProduct2.productName,
-      data.createProduct2.productImageUrl,
-      data.createProduct2.productID2,
-      data.createProduct2.productPrice,
+      data.product2.productName,
+      data.product2.productImageUrl,
+      data.product2.productID2,
+      data.product2.productPrice,
       
     );
   
@@ -58,16 +58,16 @@ it('Validate the added products in the database', ()=>{
 
   // Add created products to the shopping Cart
 
-  product.getProductByID(`${data.createProduct1.productID1}`)
+  product.getProductByID(`${data.product1.productID1}`)
   cy.wait(2000)
-  product.clickAddToCartBtn(`${data.createProduct1.productID1}`)   
+  product.clickAddToCartBtn(`${data.product1.productID1}`)   
   product.clickCloseModal()
-  product.clickAddToCartBtn(`${data.createProduct1.productID1}`) 
+  product.clickAddToCartBtn(`${data.product1.productID1}`) 
   product.clickCloseModal()
 
-  product.getProductByID(`${data.createProduct2.productID2}`)
+  product.getProductByID(`${data.product2.productID2}`)
   cy.wait(2000)
-  product.clickAddToCartBtn(`${data.createProduct2.productID2}`)   
+  product.clickAddToCartBtn(`${data.product2.productID2}`)   
   product.clickCloseModal()
 
   product.clickShopCartBtn()
@@ -86,17 +86,17 @@ it('Validate the added products in the database', ()=>{
     cy.task("connectDB", query).then((result)=>{      
    
     expect(result[0]).to.contain({           
-    product: data.createProduct1.productName, 
-    quantity: data.createProduct1.quantity,
+    product: data.product1.productName, 
+    quantity: data.product1.quantity,
     sell_id: parseInt(`${sellId}`),
-    price: data.createProduct1.productPrice
+    price: data.product1.productPrice
     })
 
     expect(result[1]).to.contain({     
-      product: data.createProduct2.productName, 
-      quantity: data.createProduct2.quantity,
+      product: data.product2.productName, 
+      quantity: data.product2.quantity,
       sell_id: parseInt(`${sellId}`),
-      price: data.createProduct2.productPrice
+      price: data.product2.productPrice
       })
   })
   })
